@@ -32,8 +32,7 @@
     "react-dom": "^19.0.0",
     "shadcn-ui": "^0.9.5",
     "tailwind-merge": "^3.2.0",
-    "tw-animate-css": "^1.2.5",
-    "@vercel/next": "^4.0.0"
+    "tw-animate-css": "^1.2.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

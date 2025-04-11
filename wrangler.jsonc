@@ -2,13 +2,5 @@
   "name": "my-nextjs-app",
   "compatibility_date": "2025-04-11",
   "main": "./worker.js",
-  "build": {
-    "command": "npm run build"
-  },
-  "site": {
-    "bucket": "./.next/static"
-  },
-  "routes": [
-    { "pattern": "/(.*)", "maintainQueryString": true }
-  ]
+  "assets": "./.next/static"
 } 
