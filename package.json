@@ -35,8 +35,9 @@
     "tw-animate-css": "^1.2.5"
   },
   "devDependencies": {
-    "@cloudflare/kv-asset-handler": "^0.3.0",
+    "@cloudflare/kv-asset-handler": "^0.3.4",
     "@tailwindcss/postcss": "^4",
+    "mime": "^3.0.0",
     "tailwindcss": "^4"
   }
 }
