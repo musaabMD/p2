@@ -1,0 +1,11 @@
+name = "my-nextjs-app"
+compatibility_date = "2025-04-11"
+compatibility_flags = ["nodejs_compat"]
+
+main = "./.next/server/pages/index.js"
+
+[site]
+bucket = "./.next/static"
+
+[build]
+command = "npm run build" 

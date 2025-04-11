@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  experimental: {
-    outputFileTracingRoot: './'
-  }
+  outputFileTracingRoot: './'
 };
 
 export default nextConfig;

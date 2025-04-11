@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import QuizHeaderPreview from '@/components/QuizHeaderPreview';
 import Questions from '@/components/Questions';
 
-export default function QuestionsPage() {
+// Wrapper component that uses useSearchParams
+function QuestionsContent() {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -101,5 +102,26 @@ export default function QuestionsPage() {
         )}
       </main>
     </div>
+  );
+}
+
+// Loading fallback for Suspense
+function QuestionsLoading() {
+  return (
+    <div className="flex flex-col min-h-screen">
+      <div className="h-16 bg-gray-200 animate-pulse"></div>
+      <div className="container mx-auto p-6 text-center">
+        <p>Loading questions...</p>
+      </div>
+    </div>
+  );
+}
+
+// Main component wrapped with Suspense
+export default function QuestionsPage() {
+  return (
+    <Suspense fallback={<QuestionsLoading />}>
+      <QuestionsContent />
+    </Suspense>
   );
 }
