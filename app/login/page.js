@@ -51,12 +51,12 @@ function LoginContent() {
         } catch (parseError) {
           // Handle case where response isn't valid JSON
           console.error('Failed to parse error response:', parseError);
-          setErrorMessage('Server error. The correct password is: 1988@1988');
+          setErrorMessage('Server error. The correct password is: 1 ');
         }
       }
     } catch (error) {
       console.error('Login error:', error);
-      setErrorMessage('An error occurred. The correct password is: 1988@1988');
+      setErrorMessage('An error occurred. The correct password is: ');
     } finally {
       setIsLoading(false);
     }
@@ -95,7 +95,7 @@ function LoginContent() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               required
-              placeholder="1988@1988"
+              placeholder="fuckoff"
             />
           </div>
           
