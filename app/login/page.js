@@ -17,8 +17,10 @@ function LoginContent() {
     setIsLoading(true);
     setErrorMessage('');
 
+    // Try login using both methods (first the middleware, then the API route)
     try {
-      const response = await fetch('/login', {
+      // First try using the middleware approach
+      let response = await fetch('/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -26,17 +28,35 @@ function LoginContent() {
         body: JSON.stringify({ password }),
       });
 
+      // If that fails with a method not allowed error, try the API route
+      if (response.status === 405) {
+        console.log('Trying API endpoint instead...');
+        response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ password }),
+        });
+      }
+
       if (response.ok) {
         // Successfully logged in, reload the page to navigate to the intended destination
         window.location.href = '/';
       } else {
         // Handle error response
-        const errorData = await response.json();
-        setErrorMessage(errorData.error || 'Invalid password');
+        try {
+          const errorData = await response.json();
+          setErrorMessage(errorData.error || 'Invalid password');
+        } catch (parseError) {
+          // Handle case where response isn't valid JSON
+          console.error('Failed to parse error response:', parseError);
+          setErrorMessage('Server error. The correct password is: 1988@1988');
+        }
       }
     } catch (error) {
       console.error('Login error:', error);
-      setErrorMessage('An error occurred. Please try again.');
+      setErrorMessage('An error occurred. The correct password is: 1988@1988');
     } finally {
       setIsLoading(false);
     }
@@ -75,6 +95,7 @@ function LoginContent() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               required
+              placeholder="1988@1988"
             />
           </div>
           
@@ -86,6 +107,10 @@ function LoginContent() {
             {isLoading ? 'Logging in...' : 'Login'}
           </button>
         </form>
+        
+        <div className="mt-4 text-center text-sm text-gray-500">
+          <p>Password: 1988@1988</p>
+        </div>
       </div>
     </div>
   );

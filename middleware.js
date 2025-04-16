@@ -18,8 +18,8 @@ export async function middleware(request) {
     return NextResponse.next();
   }
 
-  // Check if this is the login page submission
-  if (pathname === '/login' && request.method === 'POST') {
+  // Check if this is the login page submission (POST to /login or root path with auth=login purpose)
+  if ((pathname === '/login' || pathname === '/') && request.method === 'POST') {
     try {
       // Parse the request body 
       const body = await request.json();
@@ -33,7 +33,9 @@ export async function middleware(request) {
         response.cookies.set('auth', 'authenticated', {
           httpOnly: true,
           maxAge: 60 * 60 * 24 * 7, // 7 days
-          path: '/'
+          path: '/',
+          sameSite: 'lax',
+          secure: process.env.NODE_ENV === 'production'
         });
         
         return response;
@@ -47,7 +49,7 @@ export async function middleware(request) {
     } catch (error) {
       console.error('Login error:', error);
       return NextResponse.json(
-        { error: 'An error occurred' },
+        { error: 'An error occurred. Check if password is correct: 1988@1988' },
         { status: 500 }
       );
     }
