@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function LoginPage() {
+// Component that uses useSearchParams, to be wrapped in Suspense
+function LoginContent() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -87,5 +88,30 @@ export default function LoginPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+// Loading fallback
+function LoginLoading() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md w-96">
+        <div className="flex items-center justify-center mb-6">
+          <div className="w-10 h-10 bg-gray-300 rounded-lg animate-pulse"></div>
+          <div className="w-32 h-8 bg-gray-300 rounded ml-3 animate-pulse"></div>
+        </div>
+        <div className="w-full h-6 bg-gray-300 rounded mb-6 animate-pulse"></div>
+        <div className="w-full h-36 bg-gray-200 rounded animate-pulse"></div>
+      </div>
+    </div>
+  );
+}
+
+// Main component that uses Suspense
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<LoginLoading />}>
+      <LoginContent />
+    </Suspense>
   );
 } 

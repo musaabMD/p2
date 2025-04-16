@@ -1,9 +1,27 @@
 #!/bin/bash
 # Deployment script for Next.js to Cloudflare Workers
 
-# Build the Next.js app
-echo "Building Next.js app..."
+# Build project
 npm run build
+
+# Check if build was successful
+if [ $? -eq 0 ]; then
+  echo "✅ Build successful!"
+  
+  # Add files to git
+  git add .
+  
+  # Commit changes
+  git commit -m "Fix Suspense boundary for useSearchParams in login page"
+  
+  # Push to main branch
+  git push origin main
+  
+  echo "🚀 Changes pushed to GitHub. Vercel deployment should start automatically."
+else
+  echo "❌ Build failed. Please fix the errors before deploying."
+  exit 1
+fi
 
 # Install wrangler if not already installed
 if ! command -v wrangler &> /dev/null; then
