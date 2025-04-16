@@ -109,7 +109,7 @@ function LoginContent() {
         </form>
         
         <div className="mt-4 text-center text-sm text-gray-500">
-          <p>Password: 1988@1988</p>
+        
         </div>
       </div>
     </div>
