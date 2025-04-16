@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { CircleCheck, CircleAlert, BookmarkCheck, Clock } from "lucide-react";
+import CountdownTimer from '@/components/CountdownTimer';
 
 export default function Home() {
   const [stats, setStats] = useState({
@@ -114,6 +115,12 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-6">
+            <h1 className="text-3xl font-bold mb-8 text-center text-blue-700">Hi Musaab!🫡 </h1>
+            
+            <CountdownTimer />
+            
+            <h1 className="text-3xl font-bold mb-8 text-center text-green-700">  </h1>
+
       <h1 className="text-3xl font-bold mb-8 text-center">Part 2 Exam Dashboard</h1>
       
       {loading ? (

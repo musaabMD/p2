@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import QuizHeaderPreview from '@/components/QuizHeaderPreview';
 import Questions from '@/components/Questions';
+import CountdownTimer from '@/components/CountdownTimer';
 
 // Wrapper component that uses useSearchParams
 function QuestionsContent() {
@@ -89,17 +90,21 @@ function QuestionsContent() {
       />
       
       <main className="flex-1 bg-gray-50">
-        {loading ? (
-          <div className="container mx-auto p-6 text-center">
-            <p>Loading questions...</p>
-          </div>
-        ) : error ? (
-          <div className="container mx-auto p-6 text-center text-red-500">
-            <p>{error}</p>
-          </div>
-        ) : (
-          <Questions questions={questions} />
-        )}
+        <div className="container mx-auto p-6">
+          <CountdownTimer />
+          
+          {loading ? (
+            <div className="text-center">
+              <p>Loading questions...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center text-red-500">
+              <p>{error}</p>
+            </div>
+          ) : (
+            <Questions questions={questions} />
+          )}
+        </div>
       </main>
     </div>
   );

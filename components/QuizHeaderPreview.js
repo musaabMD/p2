@@ -137,9 +137,14 @@ const QuizHeaderPreview = ({ examName = "Part 2", onFiltersChange, totalQuestion
     return (
       <div className={`flex gap-2 ${isMobile ? 'w-full flex-col' : ''}`}>
         {/* Simple custom dropdown for Subject */}
-        <div className="relative">
+        <div className="relative dropdown-container">
           <button 
-            onClick={() => setShowSubjectDropdown(!showSubjectDropdown)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowSubjectDropdown(!showSubjectDropdown);
+              setShowSourceDropdown(false);
+              setShowReviewDropdown(false);
+            }}
             className={`${isMobile ? 'w-full' : 'w-40'} h-9 text-sm flex items-center px-3 bg-white border border-gray-300 rounded-md`}
           >
             <Book className="w-4 h-4 mr-1.5" />
@@ -148,7 +153,7 @@ const QuizHeaderPreview = ({ examName = "Part 2", onFiltersChange, totalQuestion
           
           {/* Subject Dropdown Content */}
           {showSubjectDropdown && (
-            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
+            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg" onClick={(e) => e.stopPropagation()}>
               <div className="p-2">
                 {Array.isArray(subject) && subject.length > 0 && (
                   <div className="flex items-center justify-between mb-2 p-2 bg-gray-100 rounded">
@@ -180,9 +185,14 @@ const QuizHeaderPreview = ({ examName = "Part 2", onFiltersChange, totalQuestion
         </div>
 
         {/* Simple custom dropdown for Source */}
-        <div className="relative">
+        <div className="relative dropdown-container">
           <button 
-            onClick={() => setShowSourceDropdown(!showSourceDropdown)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowSourceDropdown(!showSourceDropdown);
+              setShowSubjectDropdown(false);
+              setShowReviewDropdown(false);
+            }}
             className={`${isMobile ? 'w-full' : 'w-40'} h-9 text-sm flex items-center px-3 bg-white border border-gray-300 rounded-md`}
           >
             <FileText className="w-4 h-4 mr-1.5" />
@@ -191,7 +201,7 @@ const QuizHeaderPreview = ({ examName = "Part 2", onFiltersChange, totalQuestion
           
           {/* Source Dropdown Content */}
           {showSourceDropdown && (
-            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
+            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg" onClick={(e) => e.stopPropagation()}>
               <div 
                 className="p-2 hover:bg-gray-100 cursor-pointer"
                 onClick={() => { handleSourceChange("all"); setShowSourceDropdown(false); }}
@@ -212,9 +222,14 @@ const QuizHeaderPreview = ({ examName = "Part 2", onFiltersChange, totalQuestion
         </div>
 
         {/* Simple custom dropdown for Review */}
-        <div className="relative">
+        <div className="relative dropdown-container">
           <button 
-            onClick={() => setShowReviewDropdown(!showReviewDropdown)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowReviewDropdown(!showReviewDropdown);
+              setShowSubjectDropdown(false);
+              setShowSourceDropdown(false);
+            }}
             className={`${isMobile ? 'w-full' : 'w-40'} h-9 text-sm flex items-center px-3 bg-white border border-gray-300 rounded-md`}
           >
             <ReviewIcon className="w-4 h-4 mr-1.5" />
@@ -223,7 +238,7 @@ const QuizHeaderPreview = ({ examName = "Part 2", onFiltersChange, totalQuestion
           
           {/* Review Dropdown Content */}
           {showReviewDropdown && (
-            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
+            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg" onClick={(e) => e.stopPropagation()}>
               {reviewOptions.map(item => {
                 const Icon = item.icon;
                 return (
@@ -249,19 +264,33 @@ const QuizHeaderPreview = ({ examName = "Part 2", onFiltersChange, totalQuestion
   const [showSourceDropdown, setShowSourceDropdown] = useState(false);
   const [showReviewDropdown, setShowReviewDropdown] = useState(false);
 
-  // Close dropdowns when clicking outside
+  // Detect clicks outside dropdowns
   useEffect(() => {
-    const handleClickOutside = () => {
-      setShowSubjectDropdown(false);
-      setShowSourceDropdown(false);
-      setShowReviewDropdown(false);
+    const handleClickOutside = (event) => {
+      // Only close dropdowns when clicking outside
+      if (showSubjectDropdown || showSourceDropdown || showReviewDropdown) {
+        const dropdowns = document.querySelectorAll('.dropdown-container');
+        let clickedInside = false;
+        
+        dropdowns.forEach(dropdown => {
+          if (dropdown.contains(event.target)) {
+            clickedInside = true;
+          }
+        });
+        
+        if (!clickedInside) {
+          setShowSubjectDropdown(false);
+          setShowSourceDropdown(false);
+          setShowReviewDropdown(false);
+        }
+      }
     };
 
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [showSubjectDropdown, showSourceDropdown, showReviewDropdown]);
 
   return (
     <div className="w-full bg-white shadow-md">
